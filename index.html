@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Find Your Immigration Options | EasyLegalFiling</title>
+
+<link rel="icon" href="favicon.ico">
+
+<!-- TIKTOK PIXEL (YOUR REAL ID INSTALLED) -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;
+  var ttq=w[t]=w[t]||[];
+  ttq.methods=["page","track"];
+  ttq.load=function(e){var n=d.createElement("script");
+  n.async=!0,n.src="https://analytics.tiktok.com/i18n/pixel/events.js";
+  var s=d.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(n,s)};
+  ttq.load('D3M0V0RC77UELR3MUGNG');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+
+<style>
+body{margin:0;font-family:Arial;background:#f8fafc;color:#0f172a}
+.header{background:#0f172a;color:white;text-align:center;padding:20px}
+.logo{height:50px;margin-bottom:10px}
+.container{max-width:700px;margin:auto;padding:20px}
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:15px;border:1px solid #e2e8f0}
+input,select{width:100%;padding:12px;margin-bottom:10px;border-radius:8px;border:1px solid #ccc}
+button{background:#2563eb;color:white;padding:15px;border:none;border-radius:10px;width:100%;font-weight:bold;font-size:16px;cursor:pointer}
+.cta{display:block;text-align:center;background:#22c55e;color:white;padding:15px;border-radius:10px;margin-top:10px;text-decoration:none;font-weight:bold}
+.warning{color:#dc2626;font-weight:bold;margin-top:10px}
+.hidden{display:none}
+.score{font-size:18px;font-weight:bold;margin-top:10px}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<img src="logo.png" class="logo">
+<h1>Find Your Immigration Options</h1>
+<p>Answer a few questions to see what may apply to you</p>
+</div>
+
+<div class="container">
+
+<!-- LEAD CAPTURE -->
+<div class="card" id="leadForm">
+
+<h3>Start Here</h3>
+
+<form action="https://formsubmit.co/ettrickc@gmail.com" method="POST">
+
+<input type="hidden" name="_subject" value="New Immigration Lead">
+<input type="hidden" name="_autoresponse" value="We received your request. Continue now to see your results.">
+<input type="hidden" name="_next" value="#continue">
+
+<input type="text" name="name" placeholder="Your Name" required>
+<input type="email" name="email" placeholder="Your Email" required>
+<input type="tel" name="phone" placeholder="Phone (optional)">
+
+<button type="submit">Continue →</button>
+
+</form>
+
+</div>
+
+<!-- QUESTIONS -->
+<div id="questions" class="hidden card">
+
+<select id="goal">
+<option>Green Card</option>
+<option>Avoid Deportation</option>
+<option>Work Permit</option>
+<option>Asylum</option>
+</select>
+
+<select id="status">
+<option>Undocumented</option>
+<option>Overstay</option>
+<option>Valid</option>
+<option>In Court</option>
+</select>
+
+<select id="entry">
+<option>Visa Entry</option>
+<option>No Inspection</option>
+</select>
+
+<select id="family">
+<option>None</option>
+<option>US Citizen Spouse</option>
+</select>
+
+<select id="special">
+<option>None</option>
+<option>Abuse</option>
+<option>Fear</option>
+<option>Crime</option>
+</select>
+
+<select id="risk">
+<option>None</option>
+<option>Deportation</option>
+<option>Crime</option>
+<option>Fraud</option>
+</select>
+
+<button onclick="run()">See My Results</button>
+
+</div>
+
+<div id="results"></div>
+
+</div>
+
+<script>
+
+// SHOW QUESTIONS AFTER EMAIL
+if(window.location.hash === "#continue"){
+document.getElementById("leadForm").classList.add("hidden");
+document.getElementById("questions").classList.remove("hidden");
+}
+
+// RESULTS LOGIC
+function run(){
+
+ttq.track('SubmitForm');
+
+let score=0;
+let html="<div class='card'><h3>Your Results</h3>";
+
+let goal=document.getElementById("goal").value;
+let entry=document.getElementById("entry").value;
+let family=document.getElementById("family").value;
+let special=document.getElementById("special").value;
+let status=document.getElementById("status").value;
+let risk=document.getElementById("risk").value;
+
+if(family==="US Citizen Spouse" && entry==="Visa Entry"){
+score+=3;
+html+="<p><b>Marriage Green Card (I-130 + I-485)</b></p>";
+}
+
+if(special==="Fear"){
+score+=3;
+html+="<p><b>Asylum (I-589)</b></p>";
+}
+
+if(special==="Abuse"){
+score+=3;
+html+="<p><b>VAWA (I-360)</b></p>";
+}
+
+if(status==="In Court"){
+score+=3;
+html+="<p><b>Fix Your Court Case</b></p>";
+}
+
+if(score>=6){
+html+="<div class='score' style='color:#16a34a'>STRONG MATCH</div>";
+}else if(score>=3){
+html+="<div class='score' style='color:#f59e0b'>POSSIBLE MATCH</div>";
+}else{
+html+="<div class='score' style='color:#dc2626'>NEEDS REVIEW</div>";
+}
+
+if(status==="In Court"){
+html+="<p class='warning'>⚠️ You are in court. Act quickly.</p>";
+}
+
+if(risk!=="None"){
+html+="<p class='warning'>⚠️ Risk detected. Do not file blindly.</p>";
+}
+
+html+=`
+<p><b>You are closer than you think.</b></p>
+
+<a class="cta" href="https://easydivorcefiling.gavel.io/start/playground2/IMMIGRATION%20RELIEF%20FINDER">
+Get Full Step-by-Step Plan
+</a>
+
+<a class="cta" href="https://easydivorcefiling.gavel.io/portal/bundles/1fdc878f-a324-489a-bc6a-272f3e973196">
+Fix My Case Now
+</a>
+`;
+
+html+="</div>";
+
+document.getElementById("results").innerHTML=html;
+
+}
+</script>
+
+</body>
+</html>
