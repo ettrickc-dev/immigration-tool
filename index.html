@@ -8,7 +8,7 @@
 
 <link rel="icon" href="favicon.ico">
 
-<!-- TIKTOK PIXEL (YOUR REAL ID INSTALLED) -->
+<!-- TIKTOK PIXEL -->
 <script>
 !function (w, d, t) {
   w.TiktokAnalyticsObject=t;
@@ -33,7 +33,6 @@ input,select{width:100%;padding:12px;margin-bottom:10px;border-radius:8px;border
 button{background:#2563eb;color:white;padding:15px;border:none;border-radius:10px;width:100%;font-weight:bold;font-size:16px;cursor:pointer}
 .cta{display:block;text-align:center;background:#22c55e;color:white;padding:15px;border-radius:10px;margin-top:10px;text-decoration:none;font-weight:bold}
 .warning{color:#dc2626;font-weight:bold;margin-top:10px}
-.hidden{display:none}
 .score{font-size:18px;font-weight:bold;margin-top:10px}
 </style>
 </head>
@@ -48,30 +47,10 @@ button{background:#2563eb;color:white;padding:15px;border:none;border-radius:10p
 
 <div class="container">
 
-<!-- LEAD CAPTURE -->
-<div class="card" id="leadForm">
+<!-- QUESTIONS START IMMEDIATELY -->
+<div class="card">
 
-<h3>Start Here</h3>
-
-<form action="https://formsubmit.co/ettrickc@gmail.com" method="POST">
-
-<input type="hidden" name="_subject" value="New Immigration Lead">
-<input type="hidden" name="_autoresponse" value="We received your request. Continue now to see your results.">
-<input type="hidden" name="_next" value="#continue">
-
-<input type="text" name="name" placeholder="Your Name" required>
-<input type="email" name="email" placeholder="Your Email" required>
-<input type="tel" name="phone" placeholder="Phone (optional)">
-
-<button type="submit">Continue →</button>
-
-</form>
-
-</div>
-
-<!-- QUESTIONS -->
-<div id="questions" class="hidden card">
-
+<label>What do you want?</label>
 <select id="goal">
 <option>Green Card</option>
 <option>Avoid Deportation</option>
@@ -79,6 +58,7 @@ button{background:#2563eb;color:white;padding:15px;border:none;border-radius:10p
 <option>Asylum</option>
 </select>
 
+<label>Your status?</label>
 <select id="status">
 <option>Undocumented</option>
 <option>Overstay</option>
@@ -86,16 +66,19 @@ button{background:#2563eb;color:white;padding:15px;border:none;border-radius:10p
 <option>In Court</option>
 </select>
 
+<label>How did you enter?</label>
 <select id="entry">
 <option>Visa Entry</option>
 <option>No Inspection</option>
 </select>
 
+<label>Family</label>
 <select id="family">
 <option>None</option>
 <option>US Citizen Spouse</option>
 </select>
 
+<label>Special situation?</label>
 <select id="special">
 <option>None</option>
 <option>Abuse</option>
@@ -103,6 +86,7 @@ button{background:#2563eb;color:white;padding:15px;border:none;border-radius:10p
 <option>Crime</option>
 </select>
 
+<label>Risk?</label>
 <select id="risk">
 <option>None</option>
 <option>Deportation</option>
@@ -120,16 +104,9 @@ button{background:#2563eb;color:white;padding:15px;border:none;border-radius:10p
 
 <script>
 
-// SHOW QUESTIONS AFTER EMAIL
-if(window.location.hash === "#continue"){
-document.getElementById("leadForm").classList.add("hidden");
-document.getElementById("questions").classList.remove("hidden");
-}
-
-// RESULTS LOGIC
 function run(){
 
-ttq.track('SubmitForm');
+ttq.track('SubmitForm'); // conversion tracking
 
 let score=0;
 let html="<div class='card'><h3>Your Results</h3>";
@@ -141,14 +118,16 @@ let special=document.getElementById("special").value;
 let status=document.getElementById("status").value;
 let risk=document.getElementById("risk").value;
 
+/* OPTIONS */
+
 if(family==="US Citizen Spouse" && entry==="Visa Entry"){
 score+=3;
 html+="<p><b>Marriage Green Card (I-130 + I-485)</b></p>";
 }
 
-if(special==="Fear"){
-score+=3;
-html+="<p><b>Asylum (I-589)</b></p>";
+if(family==="US Citizen Spouse" && entry==="No Inspection"){
+score+=2;
+html+="<p><b>Consular + Waiver (I-130 + I-601A)</b></p>";
 }
 
 if(special==="Abuse"){
@@ -156,10 +135,22 @@ score+=3;
 html+="<p><b>VAWA (I-360)</b></p>";
 }
 
-if(status==="In Court"){
+if(special==="Fear"){
 score+=3;
-html+="<p><b>Fix Your Court Case</b></p>";
+html+="<p><b>Asylum (I-589)</b></p>";
 }
+
+if(special==="Crime"){
+score+=3;
+html+="<p><b>U Visa (I-918)</b></p>";
+}
+
+if(goal==="Avoid Deportation" || status==="In Court"){
+score+=3;
+html+="<p><b>Fix Your Court Case (Motion to Reopen / Terminate)</b></p>";
+}
+
+/* SCORE */
 
 if(score>=6){
 html+="<div class='score' style='color:#16a34a'>STRONG MATCH</div>";
@@ -169,16 +160,20 @@ html+="<div class='score' style='color:#f59e0b'>POSSIBLE MATCH</div>";
 html+="<div class='score' style='color:#dc2626'>NEEDS REVIEW</div>";
 }
 
+/* URGENCY */
+
 if(status==="In Court"){
-html+="<p class='warning'>⚠️ You are in court. Act quickly.</p>";
+html+="<p class='warning'>⚠️ You are in court. Acting quickly matters.</p>";
 }
 
 if(risk!=="None"){
 html+="<p class='warning'>⚠️ Risk detected. Do not file blindly.</p>";
 }
 
+/* CTA */
+
 html+=`
-<p><b>You are closer than you think.</b></p>
+<p><b>You are closer than you think.</b> Most people stop here — this is where mistakes happen.</p>
 
 <a class="cta" href="https://easydivorcefiling.gavel.io/start/playground2/IMMIGRATION%20RELIEF%20FINDER">
 Get Full Step-by-Step Plan
@@ -187,6 +182,16 @@ Get Full Step-by-Step Plan
 <a class="cta" href="https://easydivorcefiling.gavel.io/portal/bundles/1fdc878f-a324-489a-bc6a-272f3e973196">
 Fix My Case Now
 </a>
+
+<!-- OPTIONAL LEAD CAPTURE AFTER VALUE -->
+<div style="margin-top:20px;padding:15px;border:1px solid #e2e8f0;border-radius:10px;">
+<b>Want this sent to your email?</b>
+<form action="https://formsubmit.co/ettrickc@gmail.com" method="POST">
+<input type="hidden" name="_subject" value="Immigration Tool Lead">
+<input type="email" name="email" placeholder="Enter your email (optional)">
+<button type="submit">Send My Results</button>
+</form>
+</div>
 `;
 
 html+="</div>";
