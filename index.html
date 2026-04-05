@@ -42,56 +42,65 @@ button{background:#2563eb;color:white;padding:15px;border:none;border-radius:10p
 <div class="header">
 <img src="logo.png" class="logo">
 <h1>Find Your Immigration Options</h1>
-<p>Answer a few questions to see what may apply to you</p>
+<p>Answer a few quick questions — see what may work for you</p>
 </div>
 
 <div class="container">
 
-<!-- QUESTIONS START IMMEDIATELY -->
 <div class="card">
 
-<label>What do you want?</label>
+<label>What are you trying to do?</label>
 <select id="goal">
-<option>Green Card</option>
-<option>Avoid Deportation</option>
-<option>Work Permit</option>
-<option>Asylum</option>
+<option>Get a green card / stay permanently</option>
+<option>Avoid deportation / fix my case</option>
+<option>Work legally</option>
+<option>Bring a family member</option>
+<option>Apply for asylum</option>
+<option>Not sure — I just need help</option>
 </select>
 
-<label>Your status?</label>
+<label>Which best describes your situation?</label>
 <select id="status">
-<option>Undocumented</option>
-<option>Overstay</option>
-<option>Valid</option>
-<option>In Court</option>
+<option>I don’t have legal status right now</option>
+<option>I had a visa but stayed longer than allowed</option>
+<option>I currently have valid status</option>
+<option>I have a green card</option>
+<option>I am already in immigration court</option>
+<option>I’m not sure</option>
 </select>
 
-<label>How did you enter?</label>
+<label>How did you enter the U.S.?</label>
 <select id="entry">
-<option>Visa Entry</option>
-<option>No Inspection</option>
+<option>I came with a visa / spoke to an officer</option>
+<option>I entered without inspection</option>
+<option>I’m not sure</option>
 </select>
 
-<label>Family</label>
+<label>Do any of these apply to you?</label>
 <select id="family">
 <option>None</option>
-<option>US Citizen Spouse</option>
+<option>Married to a U.S. citizen</option>
+<option>Have a U.S. citizen child</option>
+<option>Have a green card holder spouse</option>
+<option>Other family situation</option>
 </select>
 
-<label>Special situation?</label>
+<label>Do any of these situations apply?</label>
 <select id="special">
 <option>None</option>
-<option>Abuse</option>
-<option>Fear</option>
-<option>Crime</option>
+<option>I was abused by a spouse/parent (VAWA)</option>
+<option>I am afraid to return to my country</option>
+<option>I was a victim of a crime</option>
+<option>Something else serious happened</option>
 </select>
 
-<label>Risk?</label>
+<label>Anything else we should know?</label>
 <select id="risk">
 <option>None</option>
-<option>Deportation</option>
-<option>Crime</option>
-<option>Fraud</option>
+<option>I missed court before</option>
+<option>I have a criminal record</option>
+<option>I used false information before</option>
+<option>I was deported before</option>
 </select>
 
 <button onclick="run()">See My Results</button>
@@ -106,7 +115,7 @@ button{background:#2563eb;color:white;padding:15px;border:none;border-radius:10p
 
 function run(){
 
-ttq.track('SubmitForm'); // conversion tracking
+ttq.track('SubmitForm');
 
 let score=0;
 let html="<div class='card'><h3>Your Results</h3>";
@@ -118,78 +127,77 @@ let special=document.getElementById("special").value;
 let status=document.getElementById("status").value;
 let risk=document.getElementById("risk").value;
 
-/* OPTIONS */
+/* LOGIC */
 
-if(family==="US Citizen Spouse" && entry==="Visa Entry"){
+if(family.includes("U.S. citizen") && entry.includes("visa")){
 score+=3;
-html+="<p><b>Marriage Green Card (I-130 + I-485)</b></p>";
+html+="<p><b>You may qualify for a marriage/family-based green card</b></p>";
 }
 
-if(family==="US Citizen Spouse" && entry==="No Inspection"){
+if(entry.includes("without inspection")){
 score+=2;
-html+="<p><b>Consular + Waiver (I-130 + I-601A)</b></p>";
+html+="<p><b>You may need a waiver or consular process</b></p>";
 }
 
-if(special==="Abuse"){
+if(special.includes("abused")){
 score+=3;
-html+="<p><b>VAWA (I-360)</b></p>";
+html+="<p><b>VAWA may apply (self-petition)</b></p>";
 }
 
-if(special==="Fear"){
+if(special.includes("afraid")){
 score+=3;
-html+="<p><b>Asylum (I-589)</b></p>";
+html+="<p><b>Asylum may be an option</b></p>";
 }
 
-if(special==="Crime"){
+if(special.includes("crime")){
 score+=3;
-html+="<p><b>U Visa (I-918)</b></p>";
+html+="<p><b>You may qualify for a U Visa</b></p>";
 }
 
-if(goal==="Avoid Deportation" || status==="In Court"){
+if(status.includes("court") || goal.includes("deportation")){
 score+=3;
-html+="<p><b>Fix Your Court Case (Motion to Reopen / Terminate)</b></p>";
+html+="<p><b>You should focus on fixing your immigration court case first</b></p>";
 }
 
 /* SCORE */
 
 if(score>=6){
-html+="<div class='score' style='color:#16a34a'>STRONG MATCH</div>";
+html+="<div class='score' style='color:#16a34a'>Strong possible options</div>";
 }else if(score>=3){
-html+="<div class='score' style='color:#f59e0b'>POSSIBLE MATCH</div>";
+html+="<div class='score' style='color:#f59e0b'>Possible options to explore</div>";
 }else{
-html+="<div class='score' style='color:#dc2626'>NEEDS REVIEW</div>";
+html+="<div class='score' style='color:#dc2626'>Your case needs more review</div>";
 }
 
 /* URGENCY */
 
-if(status==="In Court"){
-html+="<p class='warning'>⚠️ You are in court. Acting quickly matters.</p>";
+if(status.includes("court")){
+html+="<p class='warning'>⚠️ You are in court — timing matters</p>";
 }
 
 if(risk!=="None"){
-html+="<p class='warning'>⚠️ Risk detected. Do not file blindly.</p>";
+html+="<p class='warning'>⚠️ Your situation has risk factors — do not guess</p>";
 }
 
-/* CTA */
+/* HIGH CONVERSION CTA */
 
 html+=`
-<p><b>You are closer than you think.</b> Most people stop here — this is where mistakes happen.</p>
+<p><b>Most people in your situation take the next step now to avoid mistakes.</b></p>
 
-<a class="cta" href="https://easydivorcefiling.gavel.io/start/playground2/IMMIGRATION%20RELIEF%20FINDER">
-Get Full Step-by-Step Plan
+<a class="cta" href="https://easylegalfiling.com">
+Get My Full Step-by-Step Plan
 </a>
 
 <a class="cta" href="https://easydivorcefiling.gavel.io/portal/bundles/1fdc878f-a324-489a-bc6a-272f3e973196">
 Fix My Case Now
 </a>
 
-<!-- OPTIONAL LEAD CAPTURE AFTER VALUE -->
 <div style="margin-top:20px;padding:15px;border:1px solid #e2e8f0;border-radius:10px;">
-<b>Want this sent to your email?</b>
+<b>Want help later?</b>
 <form action="https://formsubmit.co/ettrickc@gmail.com" method="POST">
 <input type="hidden" name="_subject" value="Immigration Tool Lead">
 <input type="email" name="email" placeholder="Enter your email (optional)">
-<button type="submit">Send My Results</button>
+<button type="submit">Send me this</button>
 </form>
 </div>
 `;
